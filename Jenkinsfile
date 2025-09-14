@@ -7,7 +7,7 @@ pipeline {
   }
 
   parameters {
-    choice(name: 'DEPLOY_TYPE', choices: ['local', 'remote', 'firebase'], description: 'The type of the deploy')
+    choice(name: 'DEPLOY_TYPE', choices: ['local', 'remote', 'firebase'], defaultValue: 'local', description: 'The type of the deploy')
     string(name: 'MAX_RELEASE', defaultValue: '5', description: 'The max release')
   }
 
@@ -39,8 +39,8 @@ pipeline {
         script {
           if (params.DEPLOY_TYPE == 'local') {
             ansiblePlaybook(
-              playbook: 'deploy.local.yml',
-              inventory: 'hosts',
+              playbook: '/ansible/deploy.local.yml',
+              inventory: '/ansible/hosts',
               extraVars: [
                 max_release: params.MAX_RELEASE
               ]
@@ -48,8 +48,8 @@ pipeline {
           }
           else if (params.DEPLOY_TYPE == 'remote') {
             ansiblePlaybook(
-              playbook: 'deploy.remote.yml',
-              inventory: 'hosts',
+              playbook: '/ansible/deploy.remote.yml',
+              inventory: '/ansible/hosts',
               extraVars: [
                 max_release: params.MAX_RELEASE
               ]
@@ -57,8 +57,8 @@ pipeline {
           }
           else if (params.DEPLOY_TYPE == 'firebase') {
             ansiblePlaybook(
-              playbook: 'deploy.firebase.yml',
-              inventory: 'hosts',
+              playbook: '/ansible/deploy.firebase.yml',
+              inventory: '/ansible/hosts',
               extraVars: [
                 max_release: params.MAX_RELEASE,
                 firebase_token: env.FIREBASE_TOKEN,
