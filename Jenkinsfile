@@ -50,24 +50,24 @@ pipeline {
             RELEASE_DATE = new Date().format("yyyyMMddHHmmss")
             PRIVATE_FOLDER = "/usr/share/nginx/html/jenkins/thangnd2"
             DEPLOY_FOLDER = "/usr/share/nginx/html/jenkins/thangnd2/deploy"
-            RELEASE_FOLDER = "/usr/share/nginx/html/jenkins/thangnd2/deploy" + RELEASE_DATE
+            RELEASE_FOLDER = "/usr/share/nginx/html/jenkins/thangnd2/deploy/" + RELEASE_DATE
             TEMPLATE_FOLDER = "/usr/share/nginx/html/jenkins/template2"
             REMOTE_PORT = 3334
             REMOTE_USER = "newbie"
             REMOTE_HOST = "118.69.34.46"
             sshagent(credentials: ['REMOTE_SERVER']) {
-              ssh -o StrictHostKeyChecking=no -P $REMOTE_PORT "mkdir -p $RELEASE_FOLDER"
+              ssh -o StrictHostKeyChecking=no -P ${REMOTE_PORT} "mkdir -p ${RELEASE_FOLDER}"
               sh """
                 if [ -z "$(ls -A $RELEASE_FOLDER)" ]; then
-                  cp -r $TEMPLATE_FOLDER/* $PRIVATE_FOLDER
+                  cp -r ${TEMPLATE_FOLDER}/* ${PRIVATE_FOLDER}
                 fi
               """
 
-              ssh -o StrictHostKeyChecking=no -P $REMOTE_PORT "mkdir -p $RELEASE_FOLDER"
-              scp -o StrictHostKeyChecking=no -P $REMOTE_PORT -r ./index.html ./404.html ./css ./js ./images $REMOTE_USER@$REMOTE_HOST:$RELEASE_FOLDER
-              ssh -o StrictHostKeyChecking=no -P $REMOTE_PORT "rm -rf $PRIVATE_FOLDER/current"
-              ssh -o StrictHostKeyChecking=no -P $REMOTE_PORT "ln -s $RELEASE_FOLDER $DEPLOY_FOLDER/current"
-              ssh -o StrictHostKeyChecking=no -P $REMOTE_PORT "ls -1tr | head -n -($MAX_RELEASE + 1) | xargs -r rm -rf"
+              ssh -o StrictHostKeyChecking=no -P ${REMOTE_PORT} "mkdir -p ${RELEASE_FOLDER}"
+              scp -o StrictHostKeyChecking=no -P ${REMOTE_PORT} -r ./index.html ./404.html ./css ./js ./images $REMOTE_USER@${REMOTE_HOST}:${RELEASE_FOLDER}
+              ssh -o StrictHostKeyChecking=no -P ${REMOTE_PORT} "rm -rf ${PRIVATE_FOLDER}/current"
+              ssh -o StrictHostKeyChecking=no -P ${REMOTE_PORT} "ln -s ${RELEASE_FOLDER} ${DEPLOY_FOLDER}/current"
+              ssh -o StrictHostKeyChecking=no -P ${REMOTE_PORT} "ls -1tr | head -n -(${MAX_RELEASE} + 1) | xargs -r rm -rf"
             }
           }
           else if (params.DEPLOY_TYPE == 'firebase') {
