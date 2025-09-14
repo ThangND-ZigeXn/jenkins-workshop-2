@@ -1,0 +1,5 @@
+[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/fedora/41/$basearch/
+gpgcheck=0
+enabled=1
