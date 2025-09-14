@@ -56,15 +56,12 @@ pipeline {
             )
           }
           else if (params.DEPLOY_TYPE == 'firebase') {
-            ansiblePlaybook(
-              playbook: '/var/jenkins_home/ansible/deploy.firebase.yml',
-              inventory: '/var/jenkins_home/ansible/hosts',
-              extraVars: [
-                max_release: params.MAX_RELEASE,
-                firebase_token: env.FIREBASE_TOKEN,
-                google_application_credentials: env.GOOGLE_APPLICATION_CREDENTIALS
-              ]
-            )
+            if (env.GOOGLE_APPLICATION_CREDENTIALS) {
+              sh 'export GOOGLE_APPLICATION_CREDENTIALS="$GOOGLE_APPLICATION_CREDENTIALS"'
+              sh 'firebase deploy --only hosting --project="thangnd-workshop2"'
+            } else if (env.FIREBASE_TOKEN) {
+              sh 'firebase deploy --token "$FIREBASE_TOKEN" --only hosting --project="thangnd-workshop2"'
+            }
           }
         }
       }
