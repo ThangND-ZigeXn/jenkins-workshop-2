@@ -7,7 +7,7 @@ pipeline {
   }
 
   parameters {
-    choice(name: 'DEPLOY_TYPE', choices: ['local', 'remote', 'firebase'], defaultValue: 'local', description: 'The type of the deploy')
+    choice(name: 'DEPLOY_TYPE', choices: ['local', 'remote', 'firebase'], description: 'The type of the deploy')
     string(name: 'MAX_RELEASE', defaultValue: '5', description: 'The max release')
   }
 
