@@ -39,8 +39,8 @@ pipeline {
         script {
           if (params.DEPLOY_TYPE == 'local') {
             ansiblePlaybook(
-              playbook: '/ansible/deploy.local.yml',
-              inventory: '/ansible/hosts',
+              playbook: '/var/jenkins_home/ansible/deploy.local.yml',
+              inventory: '/var/jenkins_home/ansible/hosts',
               extraVars: [
                 max_release: params.MAX_RELEASE
               ]
@@ -48,8 +48,8 @@ pipeline {
           }
           else if (params.DEPLOY_TYPE == 'remote') {
             ansiblePlaybook(
-              playbook: '/ansible/deploy.remote.yml',
-              inventory: '/ansible/hosts',
+              playbook: '/var/jenkins_home/ansible/deploy.remote.yml',
+              inventory: '/var/jenkins_home/ansible/hosts',
               extraVars: [
                 max_release: params.MAX_RELEASE
               ]
@@ -57,8 +57,8 @@ pipeline {
           }
           else if (params.DEPLOY_TYPE == 'firebase') {
             ansiblePlaybook(
-              playbook: '/ansible/deploy.firebase.yml',
-              inventory: '/ansible/hosts',
+              playbook: '/var/jenkins_home/ansible/deploy.firebase.yml',
+              inventory: '/var/jenkins_home/ansible/hosts',
               extraVars: [
                 max_release: params.MAX_RELEASE,
                 firebase_token: env.FIREBASE_TOKEN,
