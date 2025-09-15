@@ -16,6 +16,13 @@ pipeline {
       steps {
         echo '*************** Checkout ***************'
         checkout scm
+
+        script {
+          env.GIT_AUTHOR_EMAIL = sh(
+            script: "git log -1 --pretty=format:'%ae' ${env.GIT_COMMIT}",
+            returnStdout: true
+          ).trim()
+        }
       }
     }
 
@@ -119,16 +126,11 @@ pipeline {
     success {
       echo '*************** Build success ***************'
       script {
-        def authorEmail = ""
-        for (changeSet in currentBuild.changeSets) {
-          for (entry in changeSet.items) {
-            authorEmail = entry.authorEmail
-          }
-        }
+          def authorEmail = env.GIT_AUTHOR_EMAIL
 
         def repoUrl = env.GIT_URL.replaceFirst(/\.git$/, '')
         def commitUrl = "${repoUrl}/commit/${env.GIT_COMMIT}"
-        def buildTime = new Date().format("yyyy-MM-dd HH:mm:ss")
+        def buildTime = new Date().format("yyyy-MM-dd HH:mm:ss", TimeZone.getDefault())
         def deployTypeDisplay = params.DEPLOY_TYPE == 'all' ? 'all (local, remote, firebase)' : params.DEPLOY_TYPE
 
         def message = """
@@ -165,16 +167,10 @@ pipeline {
     failure {
       echo '*************** Build failure ***************'
       script {
-        def authorEmail = ""
-
-        for (changeSet in currentBuild.changeSets) {
-          for (entry in changeSet.items) {
-            authorEmail = entry.authorEmail
-          }
-        }
+        def authorEmail = env.GIT_AUTHOR_EMAIL
         def repoUrl = env.GIT_URL.replaceFirst(/\.git$/, '')
         def commitUrl = "${repoUrl}/commit/${env.GIT_COMMIT}"
-        def buildTime = new Date().format("yyyy-MM-dd HH:mm:ss")
+        def buildTime = new Date().format("yyyy-MM-dd HH:mm:ss", TimeZone.getDefault())
         def deployTypeDisplay = params.DEPLOY_TYPE == 'all' ? 'all (local, remote, firebase)' : params.DEPLOY_TYPE
         def logUrl = "${env.BUILD_URL}console"
 
