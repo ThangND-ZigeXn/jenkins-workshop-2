@@ -134,24 +134,24 @@ pipeline {
         def deployTypeDisplay = params.DEPLOY_TYPE == 'all' ? 'all (local, remote, firebase)' : params.DEPLOY_TYPE
 
         def message = """
-:white_check_mark: Build SUCCESS
-- Author: ${authorEmail}
-- Job: ${env.JOB_NAME}#${env.BUILD_NUMBER}
-- Commit: ${commitUrl}
-- Time: ${buildTime}
-- Deploy type: ${deployTypeDisplay}
+:quyen-nang-bat-diet: *BUILD SUCCESS*
+*Author*: ${authorEmail}
+*Job*: ${env.JOB_NAME}#${env.BUILD_NUMBER}
+*Commit*: ${commitUrl}
+*Time*: ${buildTime}
+*Deploy type*: ${deployTypeDisplay}
 """.trim()
 
         if (params.DEPLOY_TYPE == 'local') {
-          message += '\n- Local: http://localhost/jenkins/deploy/current/'
+          message += '\n*Local*: http://localhost/jenkins/deploy/current/'
         } else if (params.DEPLOY_TYPE == 'firebase') {
-          message += '\n- Firebase: https://thangnd-workshop2.web.app/'
+          message += '\n*Firebase*: https://thangnd-workshop2.web.app/'
         } else if (params.DEPLOY_TYPE == 'remote') {
-          message += '\n- Remote: http://118.69.34.46/jenkins/thangnd2/deploy/current/'
+          message += '\n*Remote*: http://118.69.34.46/jenkins/thangnd2/deploy/current/'
         } else if (params.DEPLOY_TYPE == 'all') {
-          message += '\n- Local: http://localhost/jenkins/deploy/current/'
-          message += '\n- Firebase: https://thangnd-workshop2.web.app/'
-          message += '\n- Remote: http://118.69.34.46/jenkins/thangnd2/deploy/current/'
+          message += '\n*Local*: http://localhost/jenkins/deploy/current/'
+          message += '\n*Firebase*: https://thangnd-workshop2.web.app/'
+          message += '\n*Remote*: http://118.69.34.46/jenkins/thangnd2/deploy/current/'
         }
 
         slackSend(
@@ -174,13 +174,13 @@ pipeline {
         def logUrl = "${env.BUILD_URL}console"
 
         def message = """
-:x: Build FAILED
-- Author: ${authorEmail}
-- Job: ${env.JOB_NAME}#${env.BUILD_NUMBER}
-- Commit: ${commitUrl}
-- Time: ${buildTime}
-- Deploy type: ${deployTypeDisplay}
-- Log: ${logUrl}
+:soc-dien: *BUILD FAILED*
+*Author*: ${authorEmail}
+*Job*: ${env.JOB_NAME}#${env.BUILD_NUMBER}
+*Commit*: ${commitUrl}
+*Time*: ${buildTime}
+*Deploy type*: ${deployTypeDisplay}
+*Log*: ${logUrl}
 """.trim()
 
         slackSend(
