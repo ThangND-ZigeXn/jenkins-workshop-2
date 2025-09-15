@@ -116,12 +116,6 @@ pipeline {
   }
 
   post {
-    always {
-      script {
-        cleanWs()
-      }
-    }
-
     success {
       echo '*************** Build success ***************'
       script {
@@ -203,6 +197,12 @@ pipeline {
         // )
 
         echo message
+      }
+    }
+
+    always {
+      script {
+        cleanWs()
       }
     }
   }
