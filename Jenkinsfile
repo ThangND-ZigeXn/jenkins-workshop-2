@@ -59,7 +59,8 @@ pipeline {
             sshagent(credentials: ['REMOTE_SERVER']) {
               sh """
                 ssh -o StrictHostKeyChecking=no -p ${REMOTE_PORT} ${REMOTE_USER}@${REMOTE_HOST} '
-                  if [ -z "\$(ls -A ${RELEASE_FOLDER})" ]; then
+                  mkdir -p ${PRIVATE_FOLDER}
+                  if [ -z "\$(ls -A ${PRIVATE_FOLDER})" ]; then
                     cp -r ${TEMPLATE_FOLDER}/* ${PRIVATE_FOLDER}
                   fi
                 '
