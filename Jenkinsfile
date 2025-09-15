@@ -134,24 +134,24 @@ pipeline {
         def deployTypeDisplay = params.DEPLOY_TYPE == 'all' ? 'all (local, remote, firebase)' : params.DEPLOY_TYPE
 
         def message = """
-          :white_check_mark: Build SUCCESS
-          - Author: ${authorEmail}
-          - Job: ${env.JOB_NAME}#${env.BUILD_NUMBER}
-          - Commit: ${commitUrl}
-          - Time: ${buildTime}
-          - Deploy type: ${deployTypeDisplay}
-        """.trim()
+:white_check_mark: Build SUCCESS
+- Author: ${authorEmail}
+- Job: ${env.JOB_NAME}#${env.BUILD_NUMBER}
+- Commit: ${commitUrl}
+- Time: ${buildTime}
+- Deploy type: ${deployTypeDisplay}
+""".trim()
 
         if (params.DEPLOY_TYPE == 'local') {
-          message += '\n - Local: http://localhost/jenkins/deploy/current/'
+          message += '\n- Local: http://localhost/jenkins/deploy/current/'
         } else if (params.DEPLOY_TYPE == 'firebase') {
-          message += '\n - Firebase: https://thangnd-workshop2.web.app/'
+          message += '\n- Firebase: https://thangnd-workshop2.web.app/'
         } else if (params.DEPLOY_TYPE == 'remote') {
-          message += '\n - Remote: http://118.69.34.46/jenkins/thangnd2/deploy/current/'
+          message += '\n- Remote: http://118.69.34.46/jenkins/thangnd2/deploy/current/'
         } else if (params.DEPLOY_TYPE == 'all') {
-          message += '\n - Local: http://localhost/jenkins/deploy/current/'
-          message += '\n - Firebase: https://thangnd-workshop2.web.app/'
-          message += '\n - Remote: http://118.69.34.46/jenkins/thangnd2/deploy/current/'
+          message += '\n- Local: http://localhost/jenkins/deploy/current/'
+          message += '\n- Firebase: https://thangnd-workshop2.web.app/'
+          message += '\n- Remote: http://118.69.34.46/jenkins/thangnd2/deploy/current/'
         }
 
         // sendSlack(
@@ -159,7 +159,6 @@ pipeline {
         //   color: 'good',
         //   message: message
         // )
-
         echo message
       }
     }
@@ -175,21 +174,20 @@ pipeline {
         def logUrl = "${env.BUILD_URL}console"
 
         def message = """
-          :x: Build FAILED
-          - Author: ${authorEmail}
-          - Job: ${env.JOB_NAME}#${env.BUILD_NUMBER}
-          - Commit: ${commitUrl}
-          - Time: ${buildTime}
-          - Deploy type: ${deployTypeDisplay}
-          - Log: ${logUrl}
-        """.trim()
+:x: Build FAILED
+- Author: ${authorEmail}
+- Job: ${env.JOB_NAME}#${env.BUILD_NUMBER}
+- Commit: ${commitUrl}
+- Time: ${buildTime}
+- Deploy type: ${deployTypeDisplay}
+- Log: ${logUrl}
+""".trim()
 
         // sendSlack(
         //   channel: '#lnd-2025-workshop',
         //   color: 'danger',
         //   message: message
         // )
-
         echo message
       }
     }
