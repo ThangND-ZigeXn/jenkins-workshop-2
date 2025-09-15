@@ -87,9 +87,9 @@ pipeline {
           else if (params.DEPLOY_TYPE == 'firebase') {
             if (env.GOOGLE_APPLICATION_CREDENTIALS) {
               sh 'export GOOGLE_APPLICATION_CREDENTIALS="$GOOGLE_APPLICATION_CREDENTIALS"'
-              sh 'export NODE_OPTIONS="--max-old-space-size=4096" && firebase deploy --only hosting --project="thangnd-workshop2"'
+              sh 'export NODE_OPTIONS="--max-old-space-size=8192" && firebase deploy --only hosting --project="thangnd-workshop2"'
             } else if (env.FIREBASE_TOKEN) {
-              sh 'export NODE_OPTIONS="--max-old-space-size=4096" && firebase deploy --token "$FIREBASE_TOKEN" --only hosting --project="thangnd-workshop2"'
+              sh 'export NODE_OPTIONS="--max-old-space-size=8192" && firebase deploy --token "$FIREBASE_TOKEN" --only hosting --project="thangnd-workshop2"'
             }
           }
         }
