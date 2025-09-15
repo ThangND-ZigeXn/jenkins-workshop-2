@@ -130,7 +130,7 @@ pipeline {
 
         def repoUrl = env.GIT_URL.replaceFirst(/\.git$/, '')
         def commitUrl = "${repoUrl}/commit/${env.GIT_COMMIT}"
-        def buildTime = new Date().format("yyyy-MM-dd HH:mm:ss", TimeZone.getDefault())
+        def buildTime = new Date().format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone('Asia/Ho_Chi_Minh'))
         def deployTypeDisplay = params.DEPLOY_TYPE == 'all' ? 'all (local, remote, firebase)' : params.DEPLOY_TYPE
 
         def message = """
@@ -170,7 +170,7 @@ pipeline {
         def authorEmail = env.GIT_AUTHOR_EMAIL
         def repoUrl = env.GIT_URL.replaceFirst(/\.git$/, '')
         def commitUrl = "${repoUrl}/commit/${env.GIT_COMMIT}"
-        def buildTime = new Date().format("yyyy-MM-dd HH:mm:ss", TimeZone.getDefault())
+        def buildTime = new Date().format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone('Asia/Ho_Chi_Minh'))
         def deployTypeDisplay = params.DEPLOY_TYPE == 'all' ? 'all (local, remote, firebase)' : params.DEPLOY_TYPE
         def logUrl = "${env.BUILD_URL}console"
 
