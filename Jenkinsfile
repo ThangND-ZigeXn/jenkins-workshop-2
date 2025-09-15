@@ -154,11 +154,11 @@ pipeline {
           message += '\n- Remote: http://118.69.34.46/jenkins/thangnd2/deploy/current/'
         }
 
-        // sendSlack(
-        //   channel: '#lnd-2025-workshop',
-        //   color: 'good',
-        //   message: message
-        // )
+        sendSlack(
+          channel: '#lnd-2025-workshop',
+          color: 'good',
+          message: message
+        )
         echo message
       }
     }
@@ -183,11 +183,11 @@ pipeline {
 - Log: ${logUrl}
 """.trim()
 
-        // sendSlack(
-        //   channel: '#lnd-2025-workshop',
-        //   color: 'danger',
-        //   message: message
-        // )
+        sendSlack(
+          channel: '#lnd-2025-workshop',
+          color: 'danger',
+          message: message
+        )
         echo message
       }
     }
