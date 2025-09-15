@@ -47,20 +47,16 @@ pipeline {
             )
           }
           else if (params.DEPLOY_TYPE == 'remote') {
-            RELEASE_DATE   = new Date().format("yyyyMMddHHmmss")
-            PRIVATE_FOLDER = "/usr/share/nginx/html/jenkins/thangnd2"
-            DEPLOY_FOLDER  = "/usr/share/nginx/html/jenkins/thangnd2/deploy"
-            RELEASE_FOLDER = "${DEPLOY_FOLDER}/${RELEASE_DATE}"
-            TEMPLATE_FOLDER= "/usr/share/nginx/html/jenkins/template2"
-            REMOTE_PORT    = 3334
-            REMOTE_USER    = "newbie"
-            REMOTE_HOST    = "118.69.34.46"
+            def RELEASE_DATE = new Date().format("yyyyMMddHHmmss")
+            def PRIVATE_FOLDER = "/usr/share/nginx/html/jenkins/thangnd2"
+            def DEPLOY_FOLDER = "/usr/share/nginx/html/jenkins/thangnd2/deploy"
+            def RELEASE_FOLDER = "${DEPLOY_FOLDER}/${RELEASE_DATE}"
+            def TEMPLATE_FOLDER = "/usr/share/nginx/html/jenkins/template2"
+            def REMOTE_PORT = 3334
+            def REMOTE_USER = "newbie"
+            def REMOTE_HOST = "118.69.34.46"
 
             sshagent(credentials: ['REMOTE_SERVER']) {
-              sh """
-                ssh -o StrictHostKeyChecking=no -p ${REMOTE_PORT} ${REMOTE_USER}@${REMOTE_HOST} "mkdir -p ${RELEASE_FOLDER}"
-              """
-
               sh """
                 ssh -o StrictHostKeyChecking=no -p ${REMOTE_PORT} ${REMOTE_USER}@${REMOTE_HOST} '
                   if [ -z "\$(ls -A ${RELEASE_FOLDER})" ]; then
@@ -70,11 +66,15 @@ pipeline {
               """
 
               sh """
+                ssh -o StrictHostKeyChecking=no -p ${REMOTE_PORT} ${REMOTE_USER}@${REMOTE_HOST} "mkdir -p ${RELEASE_FOLDER}"
+              """
+
+              sh """
                 scp -o StrictHostKeyChecking=no -P ${REMOTE_PORT} -r ./index.html ./404.html ./css ./js ./images ${REMOTE_USER}@${REMOTE_HOST}:${RELEASE_FOLDER}
               """
 
               sh """
-                ssh -o StrictHostKeyChecking=no -p ${REMOTE_PORT} ${REMOTE_USER}@${REMOTE_HOST} "rm -rf ${PRIVATE_FOLDER}/current && ln -s ${RELEASE_FOLDER} ${DEPLOY_FOLDER}/current"
+                ssh -o StrictHostKeyChecking=no -p ${REMOTE_PORT} ${REMOTE_USER}@${REMOTE_HOST} "rm -rf ${DEPLOY_FOLDER}/current && ln -s ${RELEASE_FOLDER} ${DEPLOY_FOLDER}/current"
               """
 
               sh """
@@ -87,9 +87,9 @@ pipeline {
           else if (params.DEPLOY_TYPE == 'firebase') {
             if (env.GOOGLE_APPLICATION_CREDENTIALS) {
               sh 'export GOOGLE_APPLICATION_CREDENTIALS="$GOOGLE_APPLICATION_CREDENTIALS"'
-              sh 'export NODE_OPTIONS="--max-old-space-size=8192" && firebase deploy --only hosting --project="thangnd-workshop2"'
+              sh 'firebase deploy --only hosting --project="thangnd-workshop2"'
             } else if (env.FIREBASE_TOKEN) {
-              sh 'export NODE_OPTIONS="--max-old-space-size=8192" && firebase deploy --token "$FIREBASE_TOKEN" --only hosting --project="thangnd-workshop2"'
+              sh 'firebase deploy --token "$FIREBASE_TOKEN" --only hosting --project="thangnd-workshop2"'
             }
           }
         }
