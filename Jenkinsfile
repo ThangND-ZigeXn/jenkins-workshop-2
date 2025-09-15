@@ -125,14 +125,14 @@ pipeline {
     success {
       echo '*************** Build success ***************'
       script {
-        def commitUrl = "${env.GIT_URL}/commit/${env.GIT_COMMIT}"
+        def repoUrl = env.GIT_URL.replaceFirst(/\.git$/, '')
+        def commitUrl = "${repoUrl}/commit/${env.GIT_COMMIT}"
         def buildTime = new Date().format("yyyy-MM-dd HH:mm:ss")
         def deployTypeDisplay = params.DEPLOY_TYPE == 'all' ? 'all (local, remote, firebase)' : params.DEPLOY_TYPE
-        def logUrl = "${env.BUILD_URL}console"
 
         def message = """
           :white_check_mark: Build SUCCESS
-          - User: ${env.BUILD_USER ?: 'System'}
+          - Author: ${env.GIT_AUTHOR_NAME}
           - Job: ${env.JOB_NAME}#${env.BUILD_NUMBER}
           - Commit: ${commitUrl}
           - Time: ${buildTime}
@@ -140,15 +140,15 @@ pipeline {
         """.trim()
 
         if (params.DEPLOY_TYPE == 'local') {
-          message += ' - Local: http://localhost/jenkins/deploy/current/'
+          message += '\n - Local: http://localhost/jenkins/deploy/current/'
         } else if (params.DEPLOY_TYPE == 'firebase') {
-          message += ' - Firebase: https://thangnd-workshop2.web.app/'
+          message += '\n - Firebase: https://thangnd-workshop2.web.app/'
         } else if (params.DEPLOY_TYPE == 'remote') {
-          message += ' - Remote: http://118.69.34.46/jenkins/thangnd2/deploy/current/'
+          message += '\n - Remote: http://118.69.34.46/jenkins/thangnd2/deploy/current/'
         } else if (params.DEPLOY_TYPE == 'all') {
-          message += ' - Local: http://localhost/jenkins/deploy/current/'
-          message += ' - Firebase: https://thangnd-workshop2.web.app/'
-          message += ' - Remote: http://118.69.34.46/jenkins/thangnd2/deploy/current/'
+          message += '\n - Local: http://localhost/jenkins/deploy/current/'
+          message += '\n - Firebase: https://thangnd-workshop2.web.app/'
+          message += '\n - Remote: http://118.69.34.46/jenkins/thangnd2/deploy/current/'
         }
 
         // sendSlack(
@@ -164,14 +164,15 @@ pipeline {
     failure {
       echo '*************** Build failure ***************'
       script {
-        def commitUrl = "${env.GIT_URL}/commit/${env.GIT_COMMIT}"
+        def repoUrl = env.GIT_URL.replaceFirst(/\.git$/, '')
+        def commitUrl = "${repoUrl}/commit/${env.GIT_COMMIT}"
         def buildTime = new Date().format("yyyy-MM-dd HH:mm:ss")
         def deployTypeDisplay = params.DEPLOY_TYPE == 'all' ? 'all (local, remote, firebase)' : params.DEPLOY_TYPE
         def logUrl = "${env.BUILD_URL}console"
 
         def message = """
           :x: Build FAILED
-          - User: ${env.BUILD_USER ?: 'System'}
+          - Author: ${env.GIT_AUTHOR_NAME}
           - Job: ${env.JOB_NAME}#${env.BUILD_NUMBER}
           - Commit: ${commitUrl}
           - Time: ${buildTime}
