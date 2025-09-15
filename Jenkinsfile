@@ -120,13 +120,12 @@ pipeline {
       echo '*************** Build success ***************'
       script {
         def authorEmail = ""
-
-        dir("${env.WORKSPACE}") {
-          authorEmail = sh(
-            script: "git log -1 --pretty=format:'%ae' ${env.GIT_COMMIT}",
-            returnStdout: true
-          ).trim()
+        for (changeSet in currentBuild.changeSets) {
+          for (entry in changeSet.items) {
+            authorEmail = entry.authorEmail
+          }
         }
+
         def repoUrl = env.GIT_URL.replaceFirst(/\.git$/, '')
         def commitUrl = "${repoUrl}/commit/${env.GIT_COMMIT}"
         def buildTime = new Date().format("yyyy-MM-dd HH:mm:ss")
@@ -168,11 +167,10 @@ pipeline {
       script {
         def authorEmail = ""
 
-        dir("${env.WORKSPACE}") {
-          authorEmail = sh(
-            script: "git log -1 --pretty=format:'%ae' ${env.GIT_COMMIT}",
-            returnStdout: true
-          ).trim()
+        for (changeSet in currentBuild.changeSets) {
+          for (entry in changeSet.items) {
+            authorEmail = entry.authorEmail
+          }
         }
         def repoUrl = env.GIT_URL.replaceFirst(/\.git$/, '')
         def commitUrl = "${repoUrl}/commit/${env.GIT_COMMIT}"
