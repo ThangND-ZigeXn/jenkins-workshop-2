@@ -96,7 +96,7 @@ pipeline {
 
                 sh """
                   ssh -o StrictHostKeyChecking=no -p ${REMOTE_PORT} ${REMOTE_USER}@${REMOTE_HOST} '
-                    cd ${DEPLOY_FOLDER} && ls -1tr | grep -v "^current\$" | tail -n +\$((${MAX_RELEASE} + 1)) | xargs -r rm -rf
+                    cd ${DEPLOY_FOLDER} && ls -1t | grep -v "^current\$" | tail -n +\$((${MAX_RELEASE} + 1)) | xargs -r rm -rf
                   '
                 """
               }
@@ -113,7 +113,7 @@ pipeline {
                   sh 'firebase deploy --only hosting --project="thangnd-workshop2"'
                 }
               } else if (env.FIREBASE_TOKEN) {
-                  sh 'NODE_OPTIONS="--max-old-space-size=4096" firebase deploy --token "$FIREBASE_TOKEN" --only hosting --project="thangnd-workshop2"'
+                  sh 'firebase deploy --token "$FIREBASE_TOKEN" --only hosting --project="thangnd-workshop2"'
               }
             }
           }
