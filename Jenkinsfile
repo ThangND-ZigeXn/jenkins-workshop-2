@@ -3,6 +3,7 @@ pipeline {
 
   environment {
     FIREBASE_TOKEN = credentials('FIREBASE_TOKEN')
+    GOOGLE_APPLICATION_CREDENTIALS = credentials('GOOGLE_APPLICATION_CREDENTIALS')
   }
 
   parameters {
@@ -85,6 +86,12 @@ pipeline {
             }
           }
           else if (params.DEPLOY_TYPE == 'firebase') {
+            sh '''
+              export NODE_OPTIONS="--max-old-space-size=8192 --max-semi-space-size=1024"
+              echo "Node memory options: $NODE_OPTIONS"
+              echo "Available memory:"
+              free -h
+            '''
             if (env.GOOGLE_APPLICATION_CREDENTIALS) {
               withCredentials([file(credentialsId: 'ADC', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
                 sh 'export GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS'
