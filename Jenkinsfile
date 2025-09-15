@@ -163,28 +163,30 @@ pipeline {
 
     failure {
       echo '*************** Build failure ***************'
-      def commitUrl = "${env.GIT_URL}/commit/${env.GIT_COMMIT}"
-      def buildTime = new Date().format("yyyy-MM-dd HH:mm:ss")
-      def deployTypeDisplay = params.DEPLOY_TYPE == 'all' ? 'all (local, remote, firebase)' : params.DEPLOY_TYPE
-      def logUrl = "${env.BUILD_URL}console"
+      script {
+        def commitUrl = "${env.GIT_URL}/commit/${env.GIT_COMMIT}"
+        def buildTime = new Date().format("yyyy-MM-dd HH:mm:ss")
+        def deployTypeDisplay = params.DEPLOY_TYPE == 'all' ? 'all (local, remote, firebase)' : params.DEPLOY_TYPE
+        def logUrl = "${env.BUILD_URL}console"
 
-      def message = """
-        :x: Build FAILED
-        - User: ${env.BUILD_USER ?: 'System'}
-        - Job: ${env.JOB_NAME}#${env.BUILD_NUMBER}
-        - Commit: ${commitUrl}
-        - Time: ${buildTime}
-        - Deploy type: ${deployTypeDisplay}
-        - Log: ${logUrl}
-      """.trim()
+        def message = """
+          :x: Build FAILED
+          - User: ${env.BUILD_USER ?: 'System'}
+          - Job: ${env.JOB_NAME}#${env.BUILD_NUMBER}
+          - Commit: ${commitUrl}
+          - Time: ${buildTime}
+          - Deploy type: ${deployTypeDisplay}
+          - Log: ${logUrl}
+        """.trim()
 
-      // sendSlack(
-      //   channel: '#lnd-2025-workshop',
-      //   color: 'danger',
-      //   message: message
-      // )
+        // sendSlack(
+        //   channel: '#lnd-2025-workshop',
+        //   color: 'danger',
+        //   message: message
+        // )
 
-      echo message
+        echo message
+      }
     }
   }
 }
