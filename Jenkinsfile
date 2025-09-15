@@ -3,7 +3,6 @@ pipeline {
 
   environment {
     FIREBASE_TOKEN = credentials('FIREBASE_TOKEN')
-    GOOGLE_APPLICATION_CREDENTIALS = credentials('GOOGLE_APPLICATION_CREDENTIALS')
   }
 
   parameters {
@@ -87,8 +86,10 @@ pipeline {
           }
           else if (params.DEPLOY_TYPE == 'firebase') {
             if (env.GOOGLE_APPLICATION_CREDENTIALS) {
-              sh 'export GOOGLE_APPLICATION_CREDENTIALS="$GOOGLE_APPLICATION_CREDENTIALS"'
-              sh 'firebase deploy --only hosting --project="thangnd-workshop2"'
+              withCredentials([file(credentialsId: 'ADC', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+                sh 'export GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS'
+                sh 'firebase deploy --only hosting --project="thangnd-workshop2"'
+              }
             } else if (env.FIREBASE_TOKEN) {
               sh 'firebase deploy --token "$FIREBASE_TOKEN" --only hosting --project="thangnd-workshop2"'
             }
