@@ -125,10 +125,14 @@ pipeline {
     success {
       echo '*************** Build success ***************'
       script {
-        def authorEmail = sh(
-          script: "git log -1 --pretty=format:'%ae' ${env.GIT_COMMIT}",
-          returnStdout: true
-        ).trim()
+        def authorEmail = ""
+
+        dir("${env.WORKSPACE}") {
+          authorEmail = sh(
+            script: "git log -1 --pretty=format:'%ae' ${env.GIT_COMMIT}",
+            returnStdout: true
+          ).trim()
+        }
         def repoUrl = env.GIT_URL.replaceFirst(/\.git$/, '')
         def commitUrl = "${repoUrl}/commit/${env.GIT_COMMIT}"
         def buildTime = new Date().format("yyyy-MM-dd HH:mm:ss")
@@ -168,10 +172,14 @@ pipeline {
     failure {
       echo '*************** Build failure ***************'
       script {
-        def authorEmail = sh(
-          script: "git log -1 --pretty=format:'%ae' ${env.GIT_COMMIT}",
-          returnStdout: true
-        ).trim()
+        def authorEmail = ""
+
+        dir("${env.WORKSPACE}") {
+          authorEmail = sh(
+            script: "git log -1 --pretty=format:'%ae' ${env.GIT_COMMIT}",
+            returnStdout: true
+          ).trim()
+        }
         def repoUrl = env.GIT_URL.replaceFirst(/\.git$/, '')
         def commitUrl = "${repoUrl}/commit/${env.GIT_COMMIT}"
         def buildTime = new Date().format("yyyy-MM-dd HH:mm:ss")
