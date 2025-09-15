@@ -80,7 +80,7 @@ pipeline {
 
               sh """
                 ssh -o StrictHostKeyChecking=no -p ${REMOTE_PORT} ${REMOTE_USER}@${REMOTE_HOST} '
-                  cd ${DEPLOY_FOLDER} && ls -1tr | tail -n \$((${MAX_RELEASE} + 1)) | xargs -r rm -rf
+                  cd ${DEPLOY_FOLDER} && ls -1tr | grep -v "^current\$" | tail -n +\$((${MAX_RELEASE} + 1)) | xargs -r rm -rf
                 '
               """
             }
