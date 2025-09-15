@@ -125,6 +125,10 @@ pipeline {
     success {
       echo '*************** Build success ***************'
       script {
+        def authorEmail = sh(
+          script: "git log -1 --pretty=format:'%ae' ${env.GIT_COMMIT}",
+          returnStdout: true
+        ).trim()
         def repoUrl = env.GIT_URL.replaceFirst(/\.git$/, '')
         def commitUrl = "${repoUrl}/commit/${env.GIT_COMMIT}"
         def buildTime = new Date().format("yyyy-MM-dd HH:mm:ss")
@@ -132,7 +136,7 @@ pipeline {
 
         def message = """
           :white_check_mark: Build SUCCESS
-          - Author: ${env.GIT_AUTHOR_NAME}
+          - Author: ${authorEmail}
           - Job: ${env.JOB_NAME}#${env.BUILD_NUMBER}
           - Commit: ${commitUrl}
           - Time: ${buildTime}
@@ -164,6 +168,10 @@ pipeline {
     failure {
       echo '*************** Build failure ***************'
       script {
+        def authorEmail = sh(
+          script: "git log -1 --pretty=format:'%ae' ${env.GIT_COMMIT}",
+          returnStdout: true
+        ).trim()
         def repoUrl = env.GIT_URL.replaceFirst(/\.git$/, '')
         def commitUrl = "${repoUrl}/commit/${env.GIT_COMMIT}"
         def buildTime = new Date().format("yyyy-MM-dd HH:mm:ss")
@@ -172,7 +180,7 @@ pipeline {
 
         def message = """
           :x: Build FAILED
-          - Author: ${env.GIT_AUTHOR_NAME}
+          - Author: ${authorEmail}
           - Job: ${env.JOB_NAME}#${env.BUILD_NUMBER}
           - Commit: ${commitUrl}
           - Time: ${buildTime}
