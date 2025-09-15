@@ -89,7 +89,7 @@ pipeline {
             if (env.GOOGLE_APPLICATION_CREDENTIALS) {
               withCredentials([file(credentialsId: 'ADC', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
                 sh 'export GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS'
-                firebase deploy --only hosting --project="thangnd-workshop2" --dry-run --debug
+                sh 'firebase deploy --only hosting --project="thangnd-workshop2" --dry-run --debug'
               }
             } else if (env.FIREBASE_TOKEN) {
               sh 'NODE_OPTIONS="--max-old-space-size=4096" firebase deploy --token "$FIREBASE_TOKEN" --only hosting --project="thangnd-workshop2"'
