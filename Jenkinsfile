@@ -126,7 +126,7 @@ pipeline {
     success {
       echo '*************** Build success ***************'
       script {
-          def authorEmail = env.GIT_AUTHOR_EMAIL
+        def authorEmail = env.GIT_AUTHOR_EMAIL
 
         def repoUrl = env.GIT_URL.replaceFirst(/\.git$/, '')
         def commitUrl = "${repoUrl}/commit/${env.GIT_COMMIT}"
@@ -134,10 +134,10 @@ pipeline {
         def deployTypeDisplay = params.DEPLOY_TYPE == 'all' ? 'all (local, remote, firebase)' : params.DEPLOY_TYPE
 
         def message = """
-:quyen-nang-bat-diet: *BUILD SUCCESS*
+:unleashed-smite: *BUILD SUCCESS*
 *Author*: ${authorEmail}
 *Job*: ${env.JOB_NAME}#${env.BUILD_NUMBER}
-*Commit*: ${commitUrl}
+*Latest commit*: ${commitUrl}
 *Time*: ${buildTime}
 *Deploy type*: ${deployTypeDisplay}
 """.trim()
@@ -147,11 +147,11 @@ pipeline {
         } else if (params.DEPLOY_TYPE == 'firebase') {
           message += '\n*Firebase*: https://thangnd-workshop2.web.app/'
         } else if (params.DEPLOY_TYPE == 'remote') {
-          message += '\n*Remote*: http://118.69.34.46/jenkins/thangnd2/deploy/current/'
+          message += '\n*Remote*: http://10.1.1.195/jenkins/thangnd2/deploy/current/'
         } else if (params.DEPLOY_TYPE == 'all') {
           message += '\n*Local*: http://localhost/jenkins/deploy/current/'
           message += '\n*Firebase*: https://thangnd-workshop2.web.app/'
-          message += '\n*Remote*: http://118.69.34.46/jenkins/thangnd2/deploy/current/'
+          message += '\n*Remote*: http://10.1.1.195/jenkins/thangnd2/deploy/current/'
         }
 
         slackSend(
