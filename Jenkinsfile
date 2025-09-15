@@ -154,7 +154,7 @@ pipeline {
           message += '\n- Remote: http://118.69.34.46/jenkins/thangnd2/deploy/current/'
         }
 
-        sendSlack(
+        slackSend(
           channel: '#lnd-2025-workshop',
           color: 'good',
           message: message
@@ -183,7 +183,7 @@ pipeline {
 - Log: ${logUrl}
 """.trim()
 
-        sendSlack(
+        slackSend(
           channel: '#lnd-2025-workshop',
           color: 'danger',
           message: message
